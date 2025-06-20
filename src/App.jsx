@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AddPage from './pages/AddItemPage';
 import ViewPage from './pages/ViewPage';
+import ErrorPage from './components/Fixed/Error';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="*" element={<ErrorPage />} />
           <Route path="/add" element={<AddPage />} />
           <Route path="/seeAll" element={<ViewPage />} />
         </Routes>

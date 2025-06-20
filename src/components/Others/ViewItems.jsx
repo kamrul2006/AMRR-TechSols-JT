@@ -30,25 +30,25 @@ const ViewItems = () => {
     }, []);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 lg:pt-20">
+        <div className="max-w-7xl mx-auto px-4 pt-14 lg:pt-20">
             {/* Title */}
             <h2 className="text-4xl md:text-5xl font-bold text-center text-teal-600 mb-12">
                 Uploaded Items
             </h2>
 
             {/* Loading State */}
-            {loading && <p className="text-center text-gray-500">Loading...</p>}
+            {loading && <p className="text-center text-teal-500 text-3xl h-[500px] flex items-center justify-center">Loading...</p>}
 
             {/* Error State */}
             {error && <p className="text-center text-red-500">{error}</p>}
 
             {/* Empty State */}
             {!loading && !error && items.length === 0 && (
-                <p className="text-center text-gray-400">No items found.</p>
+                <p className="text-center text-gray-400 h-screen flex items-center justify-center">No items found.</p>
             )}
 
             {/* Grid of Items */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 h-fit mb-10">
                 {items.map(item => (
                     <div
                         key={item._id}

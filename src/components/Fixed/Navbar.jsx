@@ -15,13 +15,13 @@ const Navbar = () => {
 
     return (
         <nav className="bg-white/70 backdrop-blur-md shadow-sm font-light fixed w-full top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-4 flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/" className="flex items-center space-x-2">
-                    <div className="bg-gray-900 text-white px-3 py-1 font-bold text-lg tracking-wider">
+                <Link to="/" className="flex items-center space-x-1 pl-4 lg:pl-0">
+                    <div className="bg-gray-900 text-white px-2 text-base md:text-lg tracking-wider">
                         AMRR
                     </div>
-                    <span className="text-gray-800 font-semibold text-lg">TechSols</span>
+                    <span className="text-gray-800 font-semibold text-lg hidden  md:block">TechSols</span>
                 </Link>
 
                 {/* Desktop Menu */}

@@ -6,8 +6,8 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-700">
 
                 {/* Logo Section */}
-                <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                    <div className="bg-gray-900 text-white px-3 py-1 font-bold text-lg tracking-wider">
+                <div className="flex items-center space-x-1 mb-4 md:mb-0">
+                    <div className="bg-gray-900 text-white px-2 text-lg tracking-wider">
                         AMRR
                     </div>
                     <span className="text-gray-800 font-semibold text-lg">TechSols</span>
