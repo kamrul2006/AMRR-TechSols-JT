@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Dialog } from "@headlessui/react";
+import { AiOutlineClose } from "react-icons/ai";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+// ViewItems Component
 const ViewItems = () => {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
 
-    // Fetch all items on mount
+    // Fetch filtered items from backend on mount
     useEffect(() => {
         const fetchItems = async () => {
             try {
                 const res = await axios.get("https://coffi-back.vercel.app/coffees");
-
-                // ✅ Filter only items with web === "amrrkamrul"
-                const filteredItems = res.data.filter(
-                    item => item.web && item.web === "amrrkamrul"
-                );
-
+                const filteredItems = res.data.filter(item => item.web === "amrrkamrul");
                 setItems(filteredItems);
             } catch (err) {
                 console.error("Error fetching items:", err);
@@ -25,70 +26,122 @@ const ViewItems = () => {
                 setLoading(false);
             }
         };
-
         fetchItems();
     }, []);
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-teal-600">
-                All Uploaded Items
+        <div className="max-w-7xl mx-auto px-4 lg:pt-20">
+            {/* Title */}
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-teal-600 mb-12">
+                Uploaded Items
             </h2>
 
-            {loading && (
-                <div className="text-center text-gray-500">Loading items...</div>
-            )}
+            {/* Loading State */}
+            {loading && <p className="text-center text-gray-500">Loading...</p>}
 
-            {error && (
-                <div className="text-center text-red-500">{error}</div>
-            )}
+            {/* Error State */}
+            {error && <p className="text-center text-red-500">{error}</p>}
 
+            {/* Empty State */}
             {!loading && !error && items.length === 0 && (
-                <div className="text-center text-gray-400">No items found.</div>
+                <p className="text-center text-gray-400">No items found.</p>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {items.map((item) => (
+            {/* Grid of Items */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+                {items.map(item => (
                     <div
                         key={item._id}
-                        className="bg-white dark:bg-gray-900 shadow-lg rounded-xl overflow-hidden transition hover:shadow-xl"
+                        onClick={() => setSelectedItem(item)}
+                        className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer group"
                     >
-                        {/* Cover Image */}
                         <img
                             src={item.coverImageUrl}
                             alt={item.name}
-                            className="w-full h-52 object-cover"
+                            className="w-full h-48 object-cover rounded-t-2xl group-hover:scale-105 transition-transform duration-300"
                         />
-
-                        {/* Content */}
-                        <div className="p-4">
-                            <h3 className="text-xl font-semibold text-teal-700 dark:text-teal-400 mb-1">
+                        <div className="p-4 space-y-2">
+                            <h3 className="text-xl font-semibold text-teal-700 dark:text-teal-400">
                                 {item.name}
                             </h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">
-                                Type: <span className="font-medium">{item.type}</span>
-                            </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+                            <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
                                 {item.description}
                             </p>
                         </div>
-
-                        {/* Thumbnails */}
-                        {item.additionalImageUrls?.length > 0 && (
-                            <div className="flex flex-wrap gap-2 p-3 border-t dark:border-gray-700">
-                                {item.additionalImageUrls.slice(0, 3).map((img, idx) => (
-                                    <img
-                                        key={idx}
-                                        src={img}
-                                        alt="Additional"
-                                        className="w-16 h-16 object-cover rounded border"
-                                    />
-                                ))}
-                            </div>
-                        )}
                     </div>
                 ))}
             </div>
+
+            {/* Modal with item details */}
+            <Dialog
+                open={!!selectedItem}
+                onClose={() => setSelectedItem(null)}
+                className="fixed inset-0 z-50 overflow-y-auto"
+            >
+                {/* Backdrop */}
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" />
+
+                {/* Modal Panel */}
+                <div className="flex items-center justify-center min-h-screen px-4 py-8">
+                    <Dialog.Panel className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-xl transition-all duration-300">
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setSelectedItem(null)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-red-500"
+                        >
+                            <AiOutlineClose className="w-6 h-6" />
+                        </button>
+
+                        {/* Item Details */}
+                        {selectedItem && (
+                            <div className="p-6 md:p-8">
+                                {/* Title */}
+                                <h2 className="text-2xl md:text-3xl font-bold text-teal-600 dark:text-teal-400 mb-6">
+                                    {selectedItem.name}
+                                </h2>
+
+                                {/* Carousel */}
+                                <Carousel
+                                    showThumbs={false}
+                                    infiniteLoop
+                                    autoPlay
+                                    showStatus={false}
+                                    showArrows
+                                    className="mb-6 rounded-lg overflow-hidden"
+                                >
+                                    <div>
+                                        <img
+                                            src={selectedItem.coverImageUrl}
+                                            alt="Cover"
+                                            className="object-cover h-72 md:h-96 w-full"
+                                        />
+                                    </div>
+                                    {selectedItem.additionalImageUrls?.map((img, idx) => (
+                                        <div key={idx}>
+                                            <img
+                                                src={img}
+                                                alt={`Image ${idx}`}
+                                                className="object-cover h-72 md:h-96 w-full"
+                                            />
+                                        </div>
+                                    ))}
+                                </Carousel>
+
+                                {/* Details */}
+                                <div className="space-y-3 text-gray-700 dark:text-gray-300">
+                                    <p>
+                                        <span className="font-medium text-teal-600 dark:text-teal-400">Type:</span> {selectedItem.type}
+                                    </p>
+                                    <p className="text-lg leading-relaxed">{selectedItem.description}</p>
+                                    <p className="text-sm text-right text-gray-500">
+                                        Added: {new Date(selectedItem.createdAt).toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </Dialog.Panel>
+                </div>
+            </Dialog>
         </div>
     );
 };
