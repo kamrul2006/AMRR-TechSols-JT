@@ -5,12 +5,14 @@ import HomePage from './pages/HomePage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        {/* <Route path="/add" element={<AddItem />} /> */}
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/add" element={<AddItem />} /> */}
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 export default App;
